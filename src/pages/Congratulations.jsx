@@ -15,11 +15,13 @@ function Congratulations() {
 
     console.log(couponData, "BIRRRRRRRRRRRRR");
 
-    //submit form
-
     return (
         <Box
             sx={{
+                width: {
+                    xs: "90%",
+                    sm: "50%",
+                },
                 position: "absolute",
                 top: "50%",
                 left: "50%",
@@ -63,8 +65,24 @@ function Congratulations() {
                     </a>
                 )}
 
-                <h1>Congratulations!</h1>
-                <h2>
+                <h1
+                    style={{
+                        bgcolor: "black",
+                        color: "black",
+                        fontSize: "2.5rem",
+                        fontWeight: "bold",
+                    }}
+                >
+                    Congratulations!
+                </h1>
+                <h2
+                    style={{
+                        bgcolor: "black",
+                        color: "black",
+                        fontSize: "1.5rem",
+                        // fontWeight: "bold",
+                    }}
+                >
                     You have won a {couponData.amount}% discount from{" "}
                     {couponData.restaurant}
                 </h2>

@@ -8,6 +8,7 @@ import {
     Button,
     Box,
 } from "@mui/material";
+import { useState } from "react";
 
 //useLocation
 
@@ -15,9 +16,11 @@ function FillInformation() {
     const navigate = useNavigate();
     const location = useLocation();
     const couponData = location.state;
+    const [submitting, setSubmitting] = useState(false);
 
     //submit form
     const handleClaim = async (e) => {
+        setSubmitting(true);
         e.preventDefault();
         const formData = new FormData(e.target);
         const name = formData.get("name");
@@ -48,6 +51,7 @@ function FillInformation() {
         } else {
             console.log("Error", response.error);
         }
+        setSubmitting(false);
     };
 
     return (
@@ -144,11 +148,12 @@ function FillInformation() {
                                 />
                             </FormControl>
                             <Button
+                                disabled={submitting}
                                 type="submit"
                                 variant="contained"
                                 sx={{ bgcolor: "black" }}
                             >
-                                Claim Coupon
+                                {submitting ? "Please wait..." : "Claim"}
                             </Button>
                         </Stack>
                     </form>
