@@ -1,8 +1,13 @@
-import { useState } from "react";
-import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import supabase from "../config/supabase-config";
+import {
+    FormControl,
+    TextField,
+    Card,
+    Stack,
+    Button,
+    Box,
+} from "@mui/material";
 
 //useLocation
 
@@ -46,51 +51,110 @@ function FillInformation() {
     };
 
     return (
-        <>
-            <div>
+        //a box with white background placed right at the center of the screen
+        <Box
+            sx={{
+                width: {
+                    xs: "90%",
+                    sm: "50%",
+                },
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+
+                backgroundColor: "white",
+                borderRadius: "10px",
+            }}
+        >
+            <div
+                style={{
+                    color: "white",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
                 {couponData.restaurant === "Chanoly Noodles" ? (
                     <a href="https://vitejs.dev" target="_blank">
-                        <img src={viteLogo} className="logo" alt="Vite logo" />
+                        <img
+                            //height and width
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsTmf95ZbNgtxf-_059V0hh229LugZ310NN2GwB3DoQ&s"
+                            className="chanoly"
+                            alt="Chanoly logo"
+                        />
                     </a>
                 ) : (
                     <a href="https://react.dev" target="_blank">
-                        <img
+                        {/* <img
                             src={reactLogo}
+                            className="logo react"
+                            alt="React logo"
+                        /> */}
+                        {/* //src url img */}
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJ-xScZTMzBPM449SOYSqzbHP7JMTEm9pet-cdSIz8tw&s"
                             className="logo react"
                             alt="React logo"
                         />
                     </a>
                 )}
             </div>
-            <h1>{couponData.restaurant}</h1>
-            <div className="card" color="white">
-                <h2>Fill Information to claim coupon</h2>
+            <h1
+                style={{
+                    bgcolor: "black",
+                    color: "black",
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                }}
+            >
+                {couponData.restaurant}
+            </h1>
+            <div>
+                <h2
+                    style={{
+                        color: "black",
+                        fontSize: "1.2rem",
+                        fontWeight: "bold",
+                    }}
+                >
+                    Fill Information to claim coupon
+                </h2>
                 {/* //name and phone number form with claim button */}
-                <form onSubmit={handleClaim}>
-                    <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter your name"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="phone">Phone Number</label>
-                        <input
-                            type="text"
-                            id="phone"
-                            name="phone"
-                            placeholder="Enter your phone number"
-                            required
-                        />
-                    </div>
-                    <button type="submit">Claim</button>
-                </form>
+                {/* MUI form with mui components */}
+
+                <Card>
+                    <form onSubmit={handleClaim}>
+                        <Stack spacing={3}>
+                            <FormControl>
+                                <TextField
+                                    id="name"
+                                    name="name"
+                                    label="Name"
+                                    variant="outlined"
+                                />
+                            </FormControl>
+                            <FormControl>
+                                <TextField
+                                    id="phone"
+                                    name="phone"
+                                    label="Phone Number"
+                                    variant="outlined"
+                                />
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                sx={{ bgcolor: "black" }}
+                            >
+                                Claim Coupon
+                            </Button>
+                        </Stack>
+                    </form>
+                </Card>
             </div>
-        </>
+        </Box>
     );
 }
 

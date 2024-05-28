@@ -6,6 +6,10 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
+
+import Login from "../pages/Login";
+import SignUp from "../pages/Signup";
+
 import Splash from "../pages/Splash";
 import FillInformation from "../pages/FillInformation";
 import Congratulations from "../pages/Congratulations";
@@ -22,6 +26,10 @@ const AppRouter = () => {
     return (
         <Router>
             <Routes>
+                {/* auth  */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<SignUp />} />
+
                 <Route path="/coupons/:id" element={<Splash />} />
                 <Route path="/fill-information" element={<FillInformation />} />
                 <Route path="/congratulations" element={<Congratulations />} />

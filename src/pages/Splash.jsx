@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../config/supabase-config";
+import { Box, Card, CircularProgress, LinearProgress } from "@mui/material";
 
 function Splash() {
     // /coupons/couchanwom24
@@ -39,7 +40,25 @@ function Splash() {
         };
         fetchCoupon();
     }, []);
-    return <>Loading....</>;
+    return (
+        <Box
+            sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                padding: "20px",
+                backgroundColor: "transparent",
+                borderRadius: "10px",
+            }}
+        >
+            <CircularProgress
+                sx={{
+                    color: "black",
+                }}
+            />
+        </Box>
+    );
 }
 
 export default Splash;

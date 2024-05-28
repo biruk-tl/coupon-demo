@@ -1,96 +1,108 @@
-import { useState } from "react";
-import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
-import { useLocation, useNavigate } from "react-router-dom";
 import supabase from "../config/supabase-config";
-
-//useLocation
+import { useEffect, useState } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 function Coupons() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const couponData = location.state;
+    const [winners, setWinners] = useState([]);
+    const [loading, setLoading] = useState(true);
+    // const { id } = useParams();
 
-    //submit form
-    const handleClaim = async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const name = formData.get("name");
-        const phone = formData.get("phone");
+    useEffect(() => {
+        setLoading(true);
+        const fetchCoupon = async () => {
+            const response = await supabase.from("Coupons").select();
+            const { data, error } = response;
 
-        //send to backend
-        console.log(name, phone);
-
-        // send to supabase
-
-        const response = await supabase.from("Winners").insert([
-            {
-                coupon: couponData.coupon_name,
-                name: name,
-                phone_number: phone,
-            },
-        ]);
-
-        console.log(response);
-
-        if (response.status === 201) {
-            console.log("CONGRATSSSSSS");
-            navigate("/congratulations", {
-                state: couponData,
-            });
-
-            return;
-        } else {
-            console.log("Error", response.error);
-        }
-    };
+            console.log(response);
+            if (error) {
+                console.log(error, "MORALLLLLLLLLLLLLLLLLLll");
+            }
+            if (data[0] == null) {
+                alert("Error fetching winners");
+                return;
+            }
+            if (data) {
+                console.log("THIS IS THE DATAAAA", data);
+                setWinners(data);
+                return;
+            }
+        };
+        fetchCoupon();
+        setLoading(false);
+    }, []);
 
     return (
-        <>
-            <div>
-                {couponData.restaurant === "Chanoly Noodles" ? (
-                    <a href="https://vitejs.dev" target="_blank">
-                        <img src={viteLogo} className="logo" alt="Vite logo" />
-                    </a>
-                ) : (
-                    <a href="https://react.dev" target="_blank">
-                        <img
-                            src={reactLogo}
-                            className="logo react"
-                            alt="React logo"
-                        />
-                    </a>
-                )}
-            </div>
-            <h1>{couponData.restaurant}</h1>
-            <div className="card" color="white">
-                <h2>Fill Information to claim coupon</h2>
-                {/* //name and phone number form with claim button */}
-                <form onSubmit={handleClaim}>
-                    <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter your name"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="phone">Phone Number</label>
-                        <input
-                            type="text"
-                            id="phone"
-                            name="phone"
-                            placeholder="Enter your phone number"
-                            required
-                        />
-                    </div>
-                    <button type="submit">Claim</button>
-                </form>
-            </div>
-        </>
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+            }}
+        >
+            {loading ? (
+                <h1>Loading...</h1>
+            ) : (
+                <div>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Coupons Name</TableCell>
+                                    <TableCell align="right">
+                                        Magazine
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        Restaurant
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        Discount
+                                    </TableCell>
+                                    <TableCell align="right"></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {winners.map((row) => (
+                                    <TableRow
+                                        key={row.id}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {row.coupon_name}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {row.magazine}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {row.restaurant}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {`${row.amount}%`}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {row.available
+                                                ? `Available`
+                                                : `Redeemed`}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            )}
+        </div>
     );
 }
 
