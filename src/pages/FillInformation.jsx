@@ -25,6 +25,24 @@ function FillInformation() {
         const formData = new FormData(e.target);
         const name = formData.get("name");
         const phone = formData.get("phone");
+        //validation
+        if (name === "" || phone === "") {
+            alert("Please fill in all fields");
+
+            setSubmitting(false);
+            return;
+        }
+        if (phone.length < 10 || isNaN(phone)) {
+            alert("Please enter a valid phone number");
+            setSubmitting(false);
+            return;
+        }
+
+        if (name.length < 3 || name.length > 20 || !isNaN(name)) {
+            alert("Please enter a valid name");
+            setSubmitting(false);
+            return;
+        }
 
         //send to backend
         console.log(name, phone);
